@@ -4,6 +4,8 @@
 
 using namespace std;
 
+const double PI = atan(1) * 4;
+
 void um_um() {
 	char letter = 0;
 
@@ -25,7 +27,7 @@ void um_dois() {
 	cout << "C ? ";
 	cin >> c;
 
-	average = (a + b + c) / 3.0;
+	average = (a + b + c) / 3.0f;
 
 	cout << "media\t= " << setprecision(10) << average << endl;
 	cout << "A-media\t= " << a - average << endl;
@@ -34,7 +36,6 @@ void um_dois() {
 }
 
 void um_tres() {
-	const double PI = atan(1) * 4;
 	float p = 0, r = 0;
 
 	cout << "p ? (m) ";
@@ -113,7 +114,7 @@ void um_seis() {
 	b = calc_dist(x2, y2, x3, y3);
 	c = calc_dist(x3, y3, x1, y1);
 
-	s = (a + b + c) / 2.0;
+	s = (a + b + c) / 2.0f;
 
 	cout << "Área = " << sqrt(s*(s - a)*(s - b)*(s - c)) << endl;
 }
@@ -211,7 +212,7 @@ void dois_dois_b() {
 }
 
 void dois_dois_c() {
-	double a = 0, b = 0, c = 0;
+	float a = 0, b = 0, c = 0;
 
 	cout << "a ? ";
 	cin >> a;
@@ -258,8 +259,58 @@ void dois_quatro() {
 
 }
 
+bool is_prime(unsigned int n) {
+	for (unsigned int i = 2; i <= sqrt(n); i++)
+	if (n % i == 0)
+		return false;
+
+	return true;
+}
+
+void dois_seis_a() {
+	unsigned int n = 0;
+
+	cout << "N ? ";
+	cin >> n;
+
+	if (is_prime(n))
+		cout << "É primo";
+	else
+		cout << "Não é primo";
+
+	cout << endl;
+}
+
+void dois_seis_b() {
+	int nr_primes = 0;
+
+	for (unsigned int i = 3; nr_primes < 100; i++)
+	if (is_prime(i)) {
+		cout << i << endl;
+		nr_primes++;
+	}
+}
+
+void dois_seis_c() {
+	for (unsigned int n = 1; n <= 10000; n++)
+	if (is_prime(n))
+		cout << n << endl;
+}
+
+void dois_sete_a() {
+	cout << "ang     sen         cos         tan" << setprecision(6) << endl;
+
+	for (unsigned int angle = 0; angle <= 90; angle += 15) {
+		double radians = angle * PI / 180.0;
+
+		cout << angle;
+		
+		cout << "  " << sin(radians) << "  " << cos(radians) << "  " << tan(radians) << endl;
+	}
+}
+
 int main() {
-	dois_dois_b();
+	dois_sete_a();
 
 	return 0;
 }
