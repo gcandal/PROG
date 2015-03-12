@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -309,8 +311,134 @@ void dois_sete_a() {
 	}
 }
 
+bool isNumber(string number) {
+	bool slashFound = false;
+	for (unsigned short i = 0; i < number.length(); i++)
+	if (number[i] == '-' && i > 0)
+		return false;
+	else if (number[i] == '/') {
+		if (slashFound)
+			return false;
+		else
+			slashFound = true;
+	}
+	else if ((number[i] < '0' || number[i] > '9') && i > 0)
+		return false;
+
+	return true;
+}
+
+bool readFracc(int &numerator, int &denominator) {
+	string number = "";
+	stringstream ss;
+
+	cout << "Número ? " << endl;
+	getline(cin, number);
+
+	if (!isNumber(number)) {
+		numerator = 0;
+		denominator = 0;
+
+		return false;
+	}
+
+	unsigned short slashPos = number.find('/');
+	ss << number.substr(0, slashPos);
+	ss >> numerator;
+	ss.clear();
+	ss << number.substr(slashPos + 1, number.length() - slashPos);
+	ss >> denominator;
+
+	if (denominator == 0) {
+		numerator = 0;
+		denominator = 0;
+
+		return false;
+	}
+	
+	return true;
+}
+
+void writeFracc(int numerator, int denomirator) {
+	cout << numerator << "/" << denomirator << endl;
+}
+
+int gcd(int a, int b) {
+	if (b == 0)
+		return 1;
+
+	if (a < 0)
+		a = -a;
+
+	while (a != b)
+	if (a > b)
+		a -= b;
+	else
+		b -= a;
+
+	return a;
+}
+
+void reduceFracc(int &numerator, int &denomirator) {
+	if (denomirator == 0)
+		return;
+
+	int frac_gcd = gcd(numerator, denomirator);
+
+	numerator /= frac_gcd;
+	denomirator /= frac_gcd;
+}
+
+void sumFracc(int numerator1, int denomirator1, int numerator2, int denominator2,
+	int &numerator_result, int &denominator_result) {
+
+	numerator_result = numerator1 + numerator2;
+	denominator_result = denomirator1 + denominator2;
+
+	reduceFracc(numerator_result, denominator_result);
+}
+
+void subtractFracc(int numerator1, int denomirator1, int numerator2, int denominator2,
+	int &numerator_result, int &denominator_result) {
+
+	sumFracc(numerator1, denomirator1, -numerator2, denominator2, numerator_result, denominator_result);
+}
+
+void multiplyFracc(int numerator1, int denomirator1, int numerator2, int denominator2,
+	int &numerator_result, int &denominator_result) {
+
+	numerator_result = numerator1 * numerator2;
+	denominator_result = denomirator1 * denominator2;
+
+	reduceFracc(numerator_result, denominator_result);
+}
+
+void multiplyFracc(int numerator1, int denomirator1, int numerator2, int denominator2,
+	int &numerator_result, int &denominator_result) {
+
+	sumFracc(numerator1, denomirator1, denominator2, numerator2, numerator_result, denominator_result);
+}
+
+void tres_cinco() {
+	int num, den;
+	
+	readFracc(num, den);
+	cout << "Antes:" << endl;
+	writeFracc(num, den);
+
+	reduceFracc(num, den);
+	cout << "Depois:" << endl;
+	writeFracc(num, den);
+
+	int num_res, den_res;
+
+	sumFracc(num, den, 4, 6, num_res, den_res);
+	cout << "A tua fracc + 4/6 = ";
+	writeFracc(num_res, den_res);
+}
+
 int main() {
-	dois_sete_a();
+	tres_cinco();
 
 	return 0;
 }
