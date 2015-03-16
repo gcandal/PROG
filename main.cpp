@@ -392,8 +392,8 @@ void reduceFracc(int &numerator, int &denomirator) {
 void sumFracc(int numerator1, int denomirator1, int numerator2, int denominator2,
 	int &numerator_result, int &denominator_result) {
 
-	numerator_result = numerator1 + numerator2;
-	denominator_result = denomirator1 + denominator2;
+	numerator_result = numerator1 * denominator2 + numerator2 * denomirator1;
+	denominator_result = denomirator1 * denominator2;
 
 	reduceFracc(numerator_result, denominator_result);
 }
@@ -413,7 +413,7 @@ void multiplyFracc(int numerator1, int denomirator1, int numerator2, int denomin
 	reduceFracc(numerator_result, denominator_result);
 }
 
-void multiplyFracc(int numerator1, int denomirator1, int numerator2, int denominator2,
+void divideFracc(int numerator1, int denomirator1, int numerator2, int denominator2,
 	int &numerator_result, int &denominator_result) {
 
 	sumFracc(numerator1, denomirator1, denominator2, numerator2, numerator_result, denominator_result);
@@ -435,10 +435,85 @@ void tres_cinco() {
 	sumFracc(num, den, 4, 6, num_res, den_res);
 	cout << "A tua fracc + 4/6 = ";
 	writeFracc(num_res, den_res);
+
+	subtractFracc(num, den, 4, 6, num_res, den_res);
+	cout << "A tua fracc - 4/6 = ";
+	writeFracc(num_res, den_res);
+
+	multiplyFracc(num, den, 4, 6, num_res, den_res);
+	cout << "A tua fracc * 4/6 = ";
+	writeFracc(num_res, den_res);
+
+	divideFracc(num, den, 4, 6, num_res, den_res);
+	cout << "A tua fracc / 4/6 = ";
+	writeFracc(num_res, den_res);
+}
+
+int mdc(int a, int b) {
+	if (a % b == 0)
+		return b;
+
+	return mdc(b, a % b);
+}
+
+void tres_oito() {
+	int a, b;
+
+	cout << "Números ? ";
+	cin >> a;
+	cin >> b;
+
+	cout << "mdc = " << mdc(a, b) << endl;
+}
+
+void decompose(string compound) {
+	string compounds;
+	string current_compound;
+
+	for (char letter : compound)
+	if (letter > '0' && letter < '9') {
+		compounds += current_compound + ",";
+		current_compound = "";
+	}
+	else if (letter > 'a' && letter < 'z')
+		current_compound += letter;
+	else {
+		if (current_compound != "")
+			compounds += current_compound + ",";
+		
+		current_compound = letter;
+	}
+
+	compounds += current_compound;
+
+	cout << compounds << endl;
+}
+
+void readIntArray(int a[], int nElem) {
+	for (int i = 0; i < nElem; i++)
+		cin >> a[i];
+}
+
+int searchValueInIntArray(const int a[], int nElem, int value) {
+	for (int i = 0; i < nElem; i++)
+	if (a[i] == value)
+		return i;
+
+	return -1;
+}
+
+int searchMultValuesInIntArray(const int a[], int nElem, int value, int index[]) {
+	int indexSize = 0;
+
+	for (int i = 0; i < nElem; i++)
+	if (a[i] == value)
+		index[indexSize] = i;
+
+	return indexSize;
 }
 
 int main() {
-	tres_cinco();
+	decompose("MgOH");
 
 	return 0;
 }
